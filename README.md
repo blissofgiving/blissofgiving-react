@@ -1,4 +1,4 @@
-##vGit clone - clone using SSH
+##Git clone - clone using SSH
 ### 'git clone git@github.com:blissofgiving/blissofgiving-react.git;'
 
 ## To start the Application
@@ -13,7 +13,10 @@ In the project directory, you can run:
 3) react-router-dom and formik packages for routing and form
 
 
-
+## Git Commnads to check-in##
+git add <file-name>
+git commit
+git push
 
 
 
