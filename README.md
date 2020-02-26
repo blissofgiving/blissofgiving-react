@@ -1,3 +1,28 @@
+##vGit clone - clone using SSH
+### 'git clone git@github.com:blissofgiving/blissofgiving-react.git;'
+
+## To start the Application
+
+In the project directory, you can run:
+
+### `npm start`
+
+# Project includes:
+1) React.js and npm
+2) Axios : for Rest API calls
+3) react-router-dom and formik packages for routing and form
+
+
+
+
+
+
+
+
+
+
+# General Instructions from React
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
