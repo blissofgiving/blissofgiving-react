@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
-import UserApp from './component/UserApp';
+import Home from './component/Home';
+import Routers from './Common/Router';
 
 function App() {
   return (
-      <div className="container">
-        <UserApp />
+      <div >
+       <Routers></Routers>
       </div>
     );
 }
 
-export default App;
+export default App ;
