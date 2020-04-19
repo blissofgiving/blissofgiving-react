@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import { Grid } from '@material-ui/core';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,6 +82,11 @@ export default function InfoCard(props) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  useEffect(()=>{
+    console.log(props,'uufytrdrsseseseseseses');
+    
+  })
 
   return (
     <Card className={classes.root} onClick={()=>{props.handleSelectCard(props)}}>

@@ -10,7 +10,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Zoom from '@material-ui/core/Zoom';
-import { Card, useScrollTrigger, Grid, Link, GridList, Tabs, Tab, LinearProgress } from '@material-ui/core';
+import { Card, useScrollTrigger, Grid, Link, GridList, Tabs, Tab, LinearProgress, Box, Divider } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Button from '@material-ui/core/Button';
@@ -22,13 +22,10 @@ import LanguageIcon from '@material-ui/icons/Language';
 import HistoryIcon from '@material-ui/icons/History';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import Footer from '../Footer';
-import FundRaiserList from './FundRaiserList';
 import CustomTab from '../../Common/CustomTab';
 import ReactPlayer from 'react-player';
-import './FundRaiser.css';
 import { useHistory } from 'react-router-dom';
 import { resize } from '../../service/common';
-import DonorList from './DonorList';
 import Slider from "react-slick";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -36,6 +33,14 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CustomHeader from '../../Common/Header';
+import CauseCategory from './CauseCategoryCard';
+import WhyChoose from './WhyChoose';
+import Swiper from 'react-id-swiper';
+
+// Version >= 2.4.0
+import 'swiper/css/swiper.css'
+import ActiveFundraiser from './ActiveFundraiser';
+import GetACall from './GetCall';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -74,11 +79,11 @@ const useStyles = makeStyles(theme => ({
     },
     media: {
         height: 0,
-        marginTop:10,
+        marginTop: 10,
         paddingTop: '56.25%', // 16:9
     },
     right: {
-        marginLeft: 20,
+       // marginLeft: 20,
     },
     rightCard: {
         // marginLeft: 10,
@@ -107,10 +112,54 @@ const useStyles = makeStyles(theme => ({
         marginTop: 10,
         height: 10,
         borderRadius: 3
+    },
+    secondGrid: {
+        marginTop: 50,
+        marginBottom: 50,
+        backgroundColor: '#f7f7f7',
+    },
+    heading: {
+        fontSize: 30,
+        fontWeight: '500',
+
+    },
+    heading2: {
+        fontSize: 15,
+        // fontWeight:'500',
+    },
+    heading3: {
+        fontSize: 28,
+        // fontWeight:'500',
+    },
+    cimg: {
+        height: 70, width: 70,
+        margin: 20
+    },
+    divider:{
+        marginLeft:'30%',
+        marginRight:'30%'
     }
 
 }));
 
+const param = {
+    effect: 'coverflow',
+    centeredSlides: true,
+    slidesPreView: 'auto',
+    grabCursor: true,
+    coverfowEffect: {
+        rotate: 50,
+        strech: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+        clickable: true
+    },
+}
 
 function ScrollTop(props) {
     const { children, window } = props;
@@ -150,54 +199,54 @@ const settings = {
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
-  
-    appendDots: dots => (
-      <div
-        style={{
-          bottom: 10
-        }}
-      >
-        <ul style={{ margin: "0px", padding: 0 }}> {dots} </ul>
-      </div>
-    )
-  };
 
-  function SampleNextArrow(props) {
+    appendDots: dots => (
+        <div
+            style={{
+                bottom: 10
+            }}
+        >
+            <ul style={{ margin: "0px", padding: 0 }}> {dots} </ul>
+        </div>
+    )
+};
+
+function SampleNextArrow(props) {
     const { className, style, onClick } = props;
     return (
-      <ChevronRightIcon
-        className={className}
-        style={{
-          ...style,
-          display: "block",
-          color: "white",
-          fontSize: "3em",
-          right: "9px",
-          zIndex: 1
-        }}
-        onClick={onClick}
-      />
+        <ChevronRightIcon
+            className={className}
+            style={{
+                ...style,
+                display: "block",
+                color: "white",
+                fontSize: "3em",
+                right: "9px",
+                zIndex: 1
+            }}
+            onClick={onClick}
+        />
     );
-  }
-  
-  function SamplePrevArrow(props) {
+}
+
+function SamplePrevArrow(props) {
     const { className, style, onClick } = props;
     return (
-      <ChevronLeftIcon
-        className={className}
-        style={{
-          ...style,
-          display: "block",
-          color: "white",
-          fontSize: "3em",
-          left: "9px",
-          zIndex: 1
-        }}
-        onClick={onClick}
-      />
+        <ChevronLeftIcon
+            className={className}
+            style={{
+                ...style,
+                display: "block",
+                color: "white",
+                fontSize: "3em",
+                left: "9px",
+                zIndex: 1
+            }}
+            onClick={onClick}
+        />
     );
-  }
-  
+}
+
 
 ScrollTop.propTypes = {
     children: PropTypes.element.isRequired,
@@ -209,7 +258,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function FundRaiser(props) {
+export default function Cause(props) {
     const classes = useStyles();
     const history = useHistory();
     const [pos, setPos] = useState('absolute');
@@ -217,8 +266,8 @@ export default function FundRaiser(props) {
     const [boxs, setBoxs] = useState('');
     const [open, setOpen] = React.useState(false);
     const [arr, setArr] = useState([1, 2, 3]);
-    const [isResize,setisResize] = useState(true);
-    
+    const [isResize, setisResize] = useState(true);
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -258,7 +307,7 @@ export default function FundRaiser(props) {
     })
 
 
- 
+
 
     const [value, setValue] = React.useState(0);
 
@@ -267,49 +316,42 @@ export default function FundRaiser(props) {
     };
     return (
         <>
-        <CustomHeader pos={pos} isSignedIn={true}/>
+            <CustomHeader pos={pos} isSignedIn={true} />
 
             <Toolbar id="back-to-top-anchor" />
-            <Grid container>
-                <Grid xs={1}></Grid>
-                <Grid xs={10}>
-                    <Typography className={classes.header}>
-                        Help Us Distribute Food To Daily Wage Earners' Families Suffering From Lockdown Due To Coronavirus
-                </Typography>
-                </Grid>
-                <Grid xs={1}></Grid>
-            </Grid>
-            <Grid container>
+
+            <Grid container style={{ marginTop: 30 }}>
                 <Grid xs={1}></Grid>
                 <Grid xs={11}>
                     <Grid container>
-                        <Grid xs={isResize===false?11:7}>
+                        <Grid xs={6}>
 
                             <Card className={classes.root} >
 
-                                 <Slider {...settings}>
-                                <div className='player-wrapper'>
-                                    <ReactPlayer
-                                        className='react-player'
-                                        url='https://www.youtube.com/watch?v=bk7McNUjWgw'
-                                        width='100%'
-                                        height='100%'
-                                        // playing={true}
-                                        controls={true}
+                                <Swiper {...param} >
+                                    <div className='player-wrapper'>
+                                        <ReactPlayer
+                                            className='react-player'
+                                            url='https://www.youtube.com/watch?v=bk7McNUjWgw'
+                                            width='100%'
+                                            height='100%'
+                                            // playing={true}
+                                            controls={true}
+                                        />
+                                    </div>
+                                    <div>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image="https://d1vdjc70h9nzd9.cloudfront.net/media/campaign/171000/171615/image/widf6df2f35c801b86767a9536aa38abf081f47122e.jpg"
+                                            title="Paella dish"
+                                        />
+                                    </div>
+                                    <CardMedia
+                                        className={classes.media}
+                                        image="https://d1vdjc70h9nzd9.cloudfront.net/media/campaign/171000/171615/image/widf6df2f35c801b86767a9536aa38abf081f47122e.jpg"
+                                        title="Paella dish"
                                     />
-                                </div>
-
-                                <CardMedia
-                                    className={classes.media}
-                                    image="https://d1vdjc70h9nzd9.cloudfront.net/media/campaign/171000/171615/image/widf6df2f35c801b86767a9536aa38abf081f47122e.jpg"
-                                    title="Paella dish"
-                                />
-                                 <CardMedia
-                                    className={classes.media}
-                                    image="https://d1vdjc70h9nzd9.cloudfront.net/media/campaign/171000/171615/image/widf6df2f35c801b86767a9536aa38abf081f47122e.jpg"
-                                    title="Paella dish"
-                                />
-                                </Slider>
+                                </Swiper>
                                 <CardContent>
                                     <Typography variant="body2" color="textSecondary" component="p" style={{ fontSize: 15, fontWeight: 'bold' }}>
                                         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -322,35 +364,72 @@ export default function FundRaiser(props) {
 
                                 </CardActions>
 
-                                <CustomTab></CustomTab>
+                                {/* <CustomTab></CustomTab> */}
                             </Card>
                         </Grid>
-                        <Grid xs={isResize===false?11:4} className={classes.right}>
-                            <Card className={classes.rightCard} onClick={() => {
-                           history.push('/payment')
-                        }}>
-                                <Typography className={classes.donate}>Donate Now</Typography>
-                            </Card>
-                            <Card className={classes.rightCard} >
-                                <Typography className={classes.donate}>Spread The World</Typography>
-                            </Card>
-                            <Grid containter>
-                                <Typography className={classes.earn}>INR 177,240</Typography>
-                                <Typography>raised of INR 526,315 goal</Typography>
-                                <LinearProgress variant="determinate" value={30} className={classes.progress} />
-                            </Grid>
-                            <Grid container>
-                                <FundRaiserList></FundRaiserList>
-                            </Grid>
-                            <Grid container>
-                                <DonorList></DonorList>
-                            </Grid>
+                        <Grid xs={6} className={classes.right}>
+                        <GetACall></GetACall>
                         </Grid>
                     </Grid>
                 </Grid>
                 {/* <Grid xs={1}></Grid> */}
             </Grid>
+            <Grid container justify="center" className={classes.secondGrid}>
+                <Typography className={classes.heading}>What medical treatments can you raise funds for?</Typography>
+                <Grid container justify="center">
+                    <CauseCategory></CauseCategory>
+                    <CauseCategory></CauseCategory>
+                    <CauseCategory></CauseCategory>
+                    <CauseCategory></CauseCategory>
+                    <CauseCategory></CauseCategory>
+                    <CauseCategory></CauseCategory>
+                </Grid>
+                <Typography className={classes.heading}>Have any query or Need help?</Typography>
+                <Grid container justify="center">
+                    <Typography className={classes.heading2}>Have any query or Need help?</Typography>
+                </Grid>
 
+
+            </Grid>
+            <Grid container justify="center">
+                <Typography className={classes.heading3}>Why are people choosing medical crowdfunding?</Typography>
+            </Grid>
+            <Divider></Divider>
+            <Grid container justify="center">
+
+
+                <Grid xs={6}>
+                    <WhyChoose
+                        img="https://cdn2.iconfinder.com/data/icons/business-blue-series-set-8/128/a-89-512.png"
+                        title="High cost of treatment"></WhyChoose>
+                </Grid>
+                <Grid xs={6}>
+                    <WhyChoose
+                        img="https://cdn2.iconfinder.com/data/icons/health-care-rounded-4/512/xxx027-512.png"
+                        title="Asking For Money Isn’t Easy"></WhyChoose>
+                </Grid>
+                <Grid xs={6}>
+                    <WhyChoose
+                        img="http://getdrawings.com/free-icon/bank-icon-png-64.png"
+                        title="Emergencies Demand a Prompt Response"></WhyChoose>
+                </Grid>
+                <Grid xs={6}>
+                    <WhyChoose
+                        img="https://image.flaticon.com/icons/png/512/709/premium/709087.png"
+                        title="Loan Repayment Is Stressful"></WhyChoose>
+                </Grid>
+            </Grid>
+            <Grid container justify="center">
+                <Typography className={classes.header}>
+                    Active Fundraisers
+                </Typography>
+            </Grid>
+            <Divider className={classes.divider}></Divider>
+            <Grid container justify="center">
+                {arr.map((item) => (
+                    <ActiveFundraiser></ActiveFundraiser>
+                ))}
+            </Grid>
             <ScrollTop {...props}>
                 <Fab color="primary" size="small" aria-label="scroll back to top">
                     <KeyboardArrowUpIcon />

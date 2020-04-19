@@ -24,16 +24,21 @@ import InfoCard from './InfoCard';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import CauseCard from './CauseCard';
 import CustomizedSteppers from './Stepper';
+import MenuIcon from '@material-ui/icons/Menu';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-   // Link,
+    // Link,
     useRouteMatch,
     useParams,
     useHistory
-  } from "react-router-dom";
+} from "react-router-dom";
 import Footer from './Footer';
+import CustomDrawer from '../Common/Drawer';
+import CountryDropDown from '../Common/CountryDropDown';
+import CurrencyDropDown from '../Common/CurrencyDropDown';
+import Payment from './Payment/Payment';
 
 
 
@@ -71,19 +76,19 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '10%',
         marginTop: '5%'
     },
-    logoText:{
-      fontSize: 20, fontWeight: 'bold', paddingLeft: 50, width: 300 
+    logoText: {
+        fontSize: 20, fontWeight: 'bold', paddingLeft: 50, width: 300
     },
-    mainText:{
-        position: 'absolute', top: 200, left: 200, width: 500, right: 0, bottom: 0, fontSize: 35, color: '#fff', fontWeight: 'bold', fontFamily: 'Roboto', justifyContent: 'center', alignItems: 'center' 
+    mainText: {
+        position: 'absolute', top: 200, left: 50, width: 500, right: 0, bottom: 0, fontSize: 35, color: '#fff', fontWeight: 'bold', fontFamily: 'Roboto', justifyContent: 'center', alignItems: 'center'
     },
-    mainText2:{
-         position: 'absolute', top: 250, left: 200, width: 200, right: 0, bottom: 0, fontSize: 20, color: '#fff', justifyContent: 'center', fontFamily: 'Roboto', alignItems: 'center'
+    mainText2: {
+        position: 'absolute', top: 250, left: 50, width: 200, right: 0, bottom: 0, fontSize: 20, color: '#fff', justifyContent: 'center', fontFamily: 'Roboto', alignItems: 'center'
     },
-    fundRaiserButtonCard:{
-      height: 50, width: 300, backgroundColor: '#FFF', position: 'absolute', top: 300, left: 200, color: 'rgb(63, 181, 159)', borderRadius: 50, cursor: 'pointer' 
+    fundRaiserButtonCard: {
+        height: 50, width: 300, backgroundColor: '#FFF', position: 'absolute', top: 300, left: 50, color: 'rgb(63, 181, 159)', borderRadius: 50, cursor: 'pointer'
     },
-    fundRaiserButtonText:{
+    fundRaiserButtonText: {
         marginTop: 10, marginLeft: 40, fontSize: 20, fontWeight: 'bold'
     }
 }));
@@ -136,21 +141,40 @@ export default function Home(props) {
     const [boxs, setBoxs] = useState('');
     const [open, setOpen] = React.useState(false);
     const [arr, setArr] = useState([1, 2, 3]);
-    const handleClickOpen = () => {
+    const [component, setComponent] = useState(<SignIn></SignIn>)
+    const handleClickOpen = (num) => {
+        switch (num) {
+            case 0:
+                setComponent(<SignIn></SignIn>)
+                break;
+            case 1:
+                setComponent(<Payment></Payment>)
+                break;
+            default:
+                break;
+        }
         setOpen(true);
     };
-    const [isResize,setisResize] = useState(true);
+    const [isResize, setisResize] = useState(true);
 
     const handleClose = () => {
         setOpen(false);
     };
 
     useEffect(() => {
-        window.addEventListener('resize',(data)=>{
-            console.log(data);
-            if(data.srcElement.outerWidth<=768){
+        window.addEventListener('load', (data) => {
+            //console.log(event,'kkkkkkk');
+            if (data.currentTarget.innerWidth <= 768) {
                 setisResize(false)
-            }if(data.srcElement.outerWidth>768){
+            } if (data.currentTarget.innerWidth > 768) {
+                setisResize(true)
+            }
+        })
+        window.addEventListener('resize', (data) => {
+            console.log(data);
+            if (data.currentTarget.innerWidth <= 768) {
+                setisResize(false)
+            } if (data.currentTarget.innerWidth > 768) {
                 setisResize(true)
             }
         })
@@ -166,9 +190,13 @@ export default function Home(props) {
         })
     })
 
-    const handleSelectCard =(props)=>{
-        history.push('/faund-raiser')
-        
+    const handleSelectCard = (props) => {
+        history.push('/faund-raiser', { isResize: isResize })
+
+    }
+
+    const handleSelectCause = () => {
+        history.push('/cause', { isResize: isResize })
     }
     return (
         <>
@@ -176,34 +204,41 @@ export default function Home(props) {
             <AppBar position={pos} style={{ background: back, boxShadow: 'none' }}>
                 <Toolbar>
                     <Typography variant="h6" className={classes.logoText}>LOGO</Typography>
-                    {isResize === true?<CustomSearch></CustomSearch>:null}
-                    <Grid container justify="flex-end">
+                    {isResize === true ? <CustomSearch></CustomSearch> : null}
+                    {isResize === true ? <Grid container justify="flex-end">
 
-                        <Typography className={classes.headerMenu} >About</Typography>
-                        <Typography className={classes.headerMenu} >Start a Fundriser</Typography>
-                        <Typography className={classes.headerMenu}>Donate</Typography>
+                        <Typography className={classes.headerMenu} onClick={() => {
+                            //  handleClickOpen()
+                            history.push('/about-us', { isResize: isResize })
+                        }}>About</Typography>
+                        <Typography className={classes.headerMenu} onClick={() => {
+                            //  handleClickOpen()
+                            history.push('/sign-up', { isResize: isResize })
+                        }}>Start a Fundriser</Typography>
+
+                        {/* <Typography className={classes.headerMenu}>0</Typography> */}
+                        <CurrencyDropDown></CurrencyDropDown>
+
                         <Link onClick={() => {
-                            handleClickOpen()
+                           history.push('/payment')
+                        }}>  <Typography className={classes.headerMenu}>Donate</Typography></Link>
+                        <Link onClick={() => {
+                            handleClickOpen(0)
                         }}> <Typography className={classes.headerMenu} >Sign-in</Typography></Link>
-                    </Grid>
+                    </Grid> :
+                        <CustomDrawer></CustomDrawer>}
                 </Toolbar>
             </AppBar>
             <Toolbar id="back-to-top-anchor" />
             <Grid className={classes.container}>
-                <Typography className={classes.mainText}>Experience The Bliss of </Typography>
-                <Typography className={classes.mainText2}>0% Platform<ArrowRightIcon style={{ color: '#ff9900' }}></ArrowRightIcon> </Typography>
-                <Card className={classes.fundRaiserButtonCard}>
-                    <Typography className={classes.fundRaiserButtonText} >START A FUNDRISER</Typography>
+                <Typography className={classes.mainText} style={{ left: isResize === false ? 20 : 200, width: isResize === false ? 386 : 500 }}>Experience The Bliss of </Typography>
+                <Typography className={classes.mainText2} style={{ left: isResize === false ? 20 : 200 }}>0% Platform<ArrowRightIcon style={{ color: '#ff9900' }}></ArrowRightIcon> </Typography>
+                <Card className={classes.fundRaiserButtonCard} style={{ left: isResize === false ? 20 : 200 }}>
+                    <Typography data-testid="starts" id="start" className={classes.fundRaiserButtonText} >START A FUNDRISER</Typography>
                 </Card>
-                {/* <Grid containter style={{ height: 50,width:'100%',backgroundColor: '#FFF', position: 'absolute', top: 515, cursor: 'pointer' }}>
-                    <Grid xs={4}  alignItems="center" justify="center">
-                        <Typography style={{fontSize:25,fontWeight:'bold',color: 'rgb(63, 181, 159)',marginLeft:100}}>8000 Cr+</Typography>
-                        <Typography style={{fontSize:15,fontWeight:'bold',color: '#999',marginLeft:100}}>Raised</Typography>
-                    </Grid>
-                    
-                </Grid> */}
+
             </Grid>
-            <Grid container style={{margiTop:50,marginBottom:50}}>
+            <Grid container style={{ margiTop: 50, marginBottom: 50 }}>
                 <CustomizedSteppers></CustomizedSteppers>
             </Grid>
             <Grid container
@@ -224,12 +259,12 @@ export default function Home(props) {
             >
                 <GridList cols={2.5} >
                     {arr.map((item, i) => (
-                        <InfoCard handleSelectCard={handleSelectCard}></InfoCard>
-                        
+                        <InfoCard handleSelectCard={handleSelectCard} isResize={isResize}></InfoCard>
+
                     ))}
                 </GridList>
             </Grid>
-            
+
             <Grid container
                 direction="column"
                 alignItems="center"
@@ -245,7 +280,7 @@ export default function Home(props) {
                     <Typography style={{ color: '#777' }}>the project that you want to raise funds for.</Typography>
                 </Grid>
             </Grid>
-           
+
 
             <Grid container
                 direction="column"
@@ -254,7 +289,7 @@ export default function Home(props) {
                 <Grid xs={10}>
                     <GridList cols={4}>
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, i) => (
-                            <CauseCard></CauseCard>
+                            <CauseCard handleSelectCause={handleSelectCause}></CauseCard>
                         ))}
                     </GridList>
                 </Grid>
@@ -275,11 +310,13 @@ export default function Home(props) {
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogContent>
-                    <SignIn></SignIn>
+                <DialogContent style={{ width: 500 }}>
+                    {/* <SignIn></SignIn> */}
+                    {/* <Payment></Payment> */}
+                    {component}
                 </DialogContent>
             </Dialog>
-          
+
         </>
     );
 }
