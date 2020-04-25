@@ -8,11 +8,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { Card, CardHeader, Grid } from '@material-ui/core';
-import AcUnitIcon from '@material-ui/icons/AcUnit';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import './FundRaiser.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,34 +30,20 @@ const useStyles = makeStyles((theme) => ({
   title:{
     fontWeight:'bold',
     fontSize:20,
-  },
-  titlef:{
-    fontWeight:'bold',
-    fontSize:20,
-    color:'#3f51b5',
-    
-  },
-  iconf:{
-    fontSize:36,
-    color:'#3f51b5'
   }
 }));
 
-export default function FundRaiserList() {
+export default function DonorList() {
   const classes = useStyles();
 
   return (
       <Card className={classes.card}>
         <Grid container>
-          <Grid xs={1} style={{color:'#ccc'}}><AcUnitIcon></AcUnitIcon></Grid>
-          <Grid xs={6}> <Typography className={classes.title}>Funraiser Team</Typography></Grid>
+          <Grid xs={1} style={{color:'#ccc'}}><AccountBalanceWalletIcon></AccountBalanceWalletIcon></Grid>
+          <Grid xs={6}> <Typography className={classes.title}>Top Donors</Typography></Grid>
         </Grid>
           
-         <Grid container>
-         <Grid xs={3}>  <AddCircleOutlineIcon className={classes.iconf}></AddCircleOutlineIcon></Grid>
-           <Grid xs={6}> <Typography className={classes.titlef}>Funraiser Team</Typography></Grid>
-           <Grid xs={3}><ChevronRightIcon className={classes.iconf}></ChevronRightIcon></Grid>
-         </Grid>
+         
         
     <List className={classes.root} >
       <ListItem alignItems="flex-start" style={{width:'100%'}}>

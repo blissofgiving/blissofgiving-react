@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 300,
     margin:10,
+    cursor:'pointer'
     
   },
   crdcnt:{
@@ -61,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CauseCard() {
+export default function CauseCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -70,7 +71,7 @@ export default function CauseCard() {
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={props.handleSelectCause}>
       
       <CardMedia
         className={classes.media}

@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import ShareIcon from '@material-ui/icons/Share';
 import DescriptionIcon from '@material-ui/icons/Description';
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 const QontoConnector = withStyles({
   alternativeLabel: {
     top: 10,
@@ -124,6 +125,9 @@ const useColorlibStepIconStyles = makeStyles({
   completed: {
     backgroundImage:'linear-gradient( 136deg, rgb(63,81,181) 0%, rgb(63,81,181) 50%, rgb(63,81,181) 100%)',
   },
+  '.MuiStepLabel-completed':{
+    backgroundImage: 'linear-gradient( 136deg, rgb(251, 251, 253) 0%, rgb(242, 242, 245) 50%, rgb(248, 248, 249) 100%)'
+  }
 });
 
 function ColorlibStepIcon(props) {
@@ -133,7 +137,7 @@ function ColorlibStepIcon(props) {
   const icons = {
     1: <GroupAddIcon />,
     2: <DescriptionIcon />,
-    3: <ShareIcon />,
+    3: <ShareOutlinedIcon />,
     4: <AccountBalanceWalletIcon />
   };
 
@@ -204,56 +208,14 @@ export default function CustomizedSteppers() {
 
   return (
     <div className={classes.root}>
-      {/* <Stepper alternativeLabel activeStep={activeStep}>
+      <Stepper alternativeLabel  activeStep={activeStep} connector={<ColorlibConnector />}>
         {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
+          <Step key={label} >
+            <StepLabel StepIconComponent={ColorlibStepIcon} >{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper> */}
-      <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      {/* <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-            <div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </div>
-          </div>
-        )}
-      </div> */}
+      
     </div>
   );
 }
