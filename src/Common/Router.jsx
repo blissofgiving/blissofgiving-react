@@ -13,6 +13,9 @@ import Cause from "../component/Cause/Cause";
 import SignUp from "../component/Register";
 import AboutUs from "../component/AbouUs";
 import Payment from "../component/Payment/Payment";
+import UserDetails from "../component/User/UserDetails";
+import DataTable from "./DataTable";
+import EditProfile from "../component/EditProfile"
 
 function Routers() {
   return (
@@ -40,6 +43,15 @@ function Routers() {
           </Route>
           <Route path="/payment">
             <Payment></Payment>
+          </Route>
+          <Route path="/user-details">
+            <UserDetails/>
+          </Route>
+          <Route path="/data-table">
+            <DataTable/>
+          </Route>
+          <Route path="/edit-profile">
+            <EditProfile></EditProfile>
           </Route>
         </Switch>
       </div>

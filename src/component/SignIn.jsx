@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useState } from 'react';
+import Axios from 'axios';
+import UserDataService from '../service/UserDataService';
 
 function Copyright() {
   return (
@@ -46,8 +49,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
+  const [username, setUsername]=useState('');
+  const [password,setpassword]=useState('');
+
+  const Login=()=>{
+    console.log(process.env.USRL);
+    let data={
+      username:username,
+      password:password
+    }
+    UserDataService.login(data).then((res)=>{
+      console.log(res);
+      if(res.status==200){
+        const config = {
+          withCredentials: true,
+          mode: 'no-cors',
+          headers: { Authorization: `Bearer ${res.data.jwtToken}`,"Content-Type": "application/json",
+          "Cache-Control": "no-cache",'Access-Control-Allow-Origin': '*', },
+        };
+        Axios.get('http://blissofgiving.us-east-2.elasticbeanstalk.com/api/rest/v1/user?username=bliss', config).then((ress)=>{
+        //  console.log(ress,'llllllllllllllllllllllllllllllllllllllllllllllllll');
+        })
+        localStorage.setItem("token",res.data.jwtToken)
+        props.active(false)
+      }
+    })
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,10 +95,15 @@ export default function SignIn() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="User Name"
             name="email"
-            autoComplete="email"
+          //  autoComplete="email"
             autoFocus
+            onChange={(email)=>{
+              console.log(email.target.value);
+              setUsername(email.target.value)
+              
+            }}
           />
           <TextField
             variant="outlined"
@@ -80,33 +114,26 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
+           // autoComplete="current-password"
+            onChange={(password)=>{
+              console.log(password.target.value);
+              setpassword(password.target.value)
+            }}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
+           // type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={Login}
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>

@@ -161,7 +161,6 @@ export default function CustomHeader(props) {
     }, [open]);
     return (
         <>
-
             <AppBar position={props.pos} style={{ boxShadow: 'none' }}>
                 <Toolbar>
                     <Typography variant="h6" style={{ fontSize: 20, cursor: 'pointer', fontWeight: 'bold', paddingLeft: 50, width: 300 }} onClick={() => {
