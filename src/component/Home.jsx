@@ -39,6 +39,7 @@ import CustomDrawer from '../Common/Drawer';
 import CountryDropDown from '../Common/CountryDropDown';
 import CurrencyDropDown from '../Common/CurrencyDropDown';
 import Payment from './Payment/Payment';
+import CustomHeader from '../Common/Header';
 
 
 
@@ -137,15 +138,16 @@ export default function Home(props) {
     const history = useHistory();
 
     const [pos, setPos] = useState('absolute');
+    const [toekn,setToken]= useState("");
     const [back, setBack] = useState('transparent');
     const [boxs, setBoxs] = useState('');
     const [open, setOpen] = React.useState(false);
     const [arr, setArr] = useState([1, 2, 3]);
-    const [component, setComponent] = useState(<SignIn></SignIn>)
+    const [component, setComponent] = useState(<SignIn ></SignIn>)
     const handleClickOpen = (num) => {
         switch (num) {
             case 0:
-                setComponent(<SignIn></SignIn>)
+                setComponent(<SignIn active={active}></SignIn>)
                 break;
             case 1:
                 setComponent(<Payment></Payment>)
@@ -160,6 +162,11 @@ export default function Home(props) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const active=(data)=>{
+        console.log(data);
+        setOpen(data)
+    }
 
     useEffect(() => {
         window.addEventListener('load', (data) => {
@@ -187,7 +194,11 @@ export default function Home(props) {
                 setPos('absolute');
                 setBack('transparent');
             }
-        })
+        });
+
+        var tokenValue =localStorage.getItem('token');
+      //  console.log(JSON);
+        
     })
 
     const handleSelectCard = (props) => {
@@ -208,15 +219,15 @@ export default function Home(props) {
                     {isResize === true ? <Grid container justify="flex-end">
 
                         <Typography className={classes.headerMenu} onClick={() => {
-                            //  handleClickOpen()
+                          
                             history.push('/about-us', { isResize: isResize })
                         }}>About</Typography>
                         <Typography className={classes.headerMenu} onClick={() => {
-                            //  handleClickOpen()
+                          
                             history.push('/sign-up', { isResize: isResize })
                         }}>Start a Fundriser</Typography>
 
-                        {/* <Typography className={classes.headerMenu}>0</Typography> */}
+                      
                         <CurrencyDropDown></CurrencyDropDown>
 
                         <Link onClick={() => {
@@ -229,6 +240,7 @@ export default function Home(props) {
                         <CustomDrawer></CustomDrawer>}
                 </Toolbar>
             </AppBar>
+             {/* <CustomHeader pos={pos} isSignedIn={true}/> */}
             <Toolbar id="back-to-top-anchor" />
             <Grid className={classes.container}>
                 <Typography className={classes.mainText} style={{ left: isResize === false ? 20 : 200, width: isResize === false ? 386 : 500 }}>Experience The Bliss of </Typography>
@@ -311,8 +323,6 @@ export default function Home(props) {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogContent style={{ width: 500 }}>
-                    {/* <SignIn></SignIn> */}
-                    {/* <Payment></Payment> */}
                     {component}
                 </DialogContent>
             </Dialog>
